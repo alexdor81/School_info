@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Форма по добавлению параметров{% endblock %}
+
+{% block content %}
+<h3 class="form-add-str">Введите параметры для выполнения процедуры или функции</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-secondary btn-sm">Выполнить</button>
+</form>
+
+{% endblock %}

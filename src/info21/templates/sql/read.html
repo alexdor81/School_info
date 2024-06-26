@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}
+Таблица {{ title }}
+{% endblock %}
+{% block content %}
+{% if data %}
+<div class="m-2">
+  <h2>
+    Таблица {{ title }}:
+  </h2>
+</div>
+<div class="m-2">
+  <table class="table-secondary table-bordered table-sm">
+    <thead>
+      <tr>
+        {% for field in fields %}
+        <td align="center"><b>{{ field }}</b></td>
+        {% endfor %}
+        <td align="center">
+          <b>Обновить</b>
+        </td>
+        <td align="center">
+          <b>Удалить</b>
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in data.values %}
+      <tr>
+        {% for item in row.values %}
+        <td>{{ item }}</td>
+        {% endfor %}
+        {% if title == 'Peers' %}
+        {% with obj_pk=row.nickname %}
+        {% include 'includes/buttons.html' %}
+        {% endwith %}
+        {% elif title == 'Tasks' %}
+        {% with obj_pk=row.title %}
+        {% include 'includes/buttons.html' %}
+        {% endwith %}
+        {% else %}
+        {% with obj_pk=row.id %}
+        {% include 'includes/buttons.html' %}
+        {% endwith %}
+        {% endif %}
+        {% endfor %}
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+<div class="m-2">
+  <a href="{% url 'sql:data_create' table=title %}"><button type="button" class="btn btn-secondary btn-sm"
+      onclick="return confirm('Подтвердите действие!');">Создать</button></a>
+  <a href="{% url 'sql:data_import' table=title %}"><button type="button"
+      class="btn btn-secondary btn-sm">Импорт</button></a>
+  <a href="{% url 'sql:data_export' table=title %}"><button type="button"
+      class="btn btn-secondary btn-sm">Экспорт</button></a>
+  <a href="{% url 'sql:table_delete' table=title %}"><button type="button" class="btn btn-secondary btn-sm"
+      onclick="return confirm('Подтвердите действие!');">Удалить таблицу</button></a>
+</div>
+{% else %}
+<div class="m-2">
+  <h2>
+    Таблица {{ title }} пустая!
+  </h2>
+</div>
+<div class="m-2">
+  <a href="{% url 'sql:data_create' table=title %}"><button type="button" class="btn btn-secondary btn-sm"
+      onclick="return confirm('Подтвердите действие!');">Создать</button></a>
+  <a href="{% url 'sql:data_import' table=title %}"><button type="button"
+      class="btn btn-secondary btn-sm">Импорт</button></a>
+</div>
+{% endif %}
+{% endblock %}

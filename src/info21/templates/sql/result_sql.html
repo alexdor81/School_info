@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Результат SQL-запроса{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% if error_message %}
+    <div class="alert alert-danger">
+        {{ error_message }}
+    </div>
+    {% else %}
+    <h3>Результат запроса {{ name }}</h3>
+    {% if type %}
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="export_csv" class="btn btn-secondary btn-sm">Экспорт в файл</button>
+    </form>
+    {% endif %}
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                {% for col in column %}
+                <th>{{ col }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                {% for cell in row %}
+                <td>{{ cell }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+{% endblock %}

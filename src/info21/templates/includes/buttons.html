@@ -1,0 +1,8 @@
+<td>
+    <a href="{% url 'sql:data_update' table=title pk=obj_pk %}"><button type="button" class="btn btn-secondary btn-sm"
+            onclick="return confirm('Подтвердите действие!');">Обновить</button></a>
+</td>
+<td>
+    <a href="{% url 'sql:data_delete' table=title pk=obj_pk %}"><button type="button" class="btn btn-secondary btn-sm"
+            onclick="return confirm('Подтвердите действие!');">Удалить</button></a>
+</td>

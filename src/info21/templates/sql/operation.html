@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block content %}
+
+<div class="m-2">
+    <h3>
+        Список со всеми возможными для вызова запросами из проекта SQL2:
+    </h3>
+    <div class="m-2">
+        <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true"
+            style="position: relative; height: 500px">
+            <table class="table-secondary table-bordered table-sm">
+                <thead>
+                    <tr class="table-header">
+                        <th>Тип</th>
+                        <th>Название</th>
+                        <th>Описание</th>
+                        <th>Выполнить</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in procedures %}
+                    <tr>
+                        {% for col in row %}
+                        {% if forloop.counter != 3 and forloop.counter != 4 %}
+                        <td>{{ col }}</td>
+                        {% endif %}
+                        {% endfor %}
+                        {% if row.2 != ""%}
+                        <td>
+                            <a href="{% url 'sql:execute' type_sql=row.0 name=row.1 params=row.2 %}">
+                                <button type="button" class="btn btn-secondary btn-sm">Выполнить</button></a>
+                        </td>
+                        {% else %}
+                        <td>
+                            <a href="{% url 'sql:execute_form' type_sql=row.0 name=row.1 %}">
+                                <button type="button" class="btn btn-secondary btn-sm">Выполнить</button></a>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    <div class="d-flex flex-row">
+        <form class="operation" method="POST" action="{% url 'sql:execute_sql' %}">
+            {% csrf_token %}
+            <h3>Выполнить произвольный SQL-запрос:</h3>
+            <textarea class="form-control" placeholder="Введите SQL-запрос" name="sql_query"></textarea>
+            <br>
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-secondary btn-sm">
+                    Выполнить запрос
+                </button>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" name="save_results">
+                    <label class="form-check-label" for="defaultCheck1">
+                        Экспорт результата в файл
+                    </label>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    {% endblock %}

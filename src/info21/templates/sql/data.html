@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block content %}
+<div class="m-2">
+  <h2>
+    Таблицы:
+  </h2>
+</div>
+{% for table in data %}
+<div class="m-2">
+  <a href="{% url 'sql:data_read' table=table %}"><button type="button"
+      class="btn btn-secondary btn-sm">{{ table }}</button></a>
+</div>
+{% endfor %}
+{% endblock %}

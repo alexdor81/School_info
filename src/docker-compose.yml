@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  database:
+    container_name: info21_db
+    build: ./db/
+    environment:
+      - POSTGRES_PASSWORD=student
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d info21_db -p 5432 -U student"]
+
+  application:
+    container_name: info21_app
+    build: ./info21/
+    volumes:
+      - ./info21:/code/info21
+    command: >
+      sh -c "python info21/manage.py makemigrations
+             python info21/manage.py migrate
+             python info21/manage.py import_data
+             python info21/manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      database:
+        condition: service_healthy
+
+  nginx:
+    image: nginx:latest
+    container_name: proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - application
+
+volumes:
+  postgres:
+  info21:

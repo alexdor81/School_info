@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/icon.png' %}">
+    <title>
+        {% block title %}
+        Тут должен быть заголовок
+        {% endblock %}
+    </title>
+    <style>
+        body {
+            background: #ebecf4 !important;
+            font-family: Helvetica, sans-serif;
+        }
+
+        ul.nav li a:hover,
+        ul.nav li a:active {
+            color: white !important;
+        }
+    </style>
+
+</head>
+
+<body>
+    <header>
+        {% include 'includes/header.html' %}
+    </header>
+    <main>
+        {% block content %}
+        Тут должно быть содержание
+        {% endblock %}
+    </main>
+    <footer>
+        {% include 'includes/footer.html' %}
+    </footer>
+</body>
+
+</html>
